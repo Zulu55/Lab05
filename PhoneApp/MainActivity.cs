@@ -64,8 +64,8 @@ namespace PhoneApp
         private async void Validate()
         {
             var serviceClient = new ServiceClient();
-            var studentEmail = "jzuluaga55@gmail.com";
-            var password = "Roger1974";
+            var studentEmail = "XXX";
+            var password = "XXX";
             var myDevice = Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId);
             var result = await serviceClient.ValidateAsync(studentEmail, password, myDevice);
             var builder = new AlertDialog.Builder(this);
