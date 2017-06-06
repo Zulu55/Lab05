@@ -1,13 +1,16 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using SALLab05;
+using SALLab06;
+using System.Collections.Generic;
 
 namespace PhoneApp
 {
     [Activity(Label = "Phone App", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
+        static readonly List<string> phoneNumbers = new List<string>();
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -18,6 +21,7 @@ namespace PhoneApp
             var PhoneNumberText = FindViewById<EditText>(Resource.Id.PhoneNumberText);
             var TranslateButton = FindViewById<Button>(Resource.Id.TranslateButton);
             var CallButton = FindViewById<Button>(Resource.Id.CallButton);
+            var CallHistoryButton = FindViewById<Button>(Resource.Id.CallHistoryButton);
 
             CallButton.Enabled = false;
 
@@ -46,6 +50,12 @@ namespace PhoneApp
                 CallDialog.SetMessage($"Llamar al número {TranslatedNumber}?");
                 CallDialog.SetNeutralButton("Llamar", delegate
                 {
+                    // Agregar el número marcado a la lista de números marcados
+                    phoneNumbers.Add(TranslatedNumber);
+
+                    // Habilitar botón CallHistotyButton
+                    CallHistoryButton.Enabled = true;
+
                     // Crear un intento para marcar el número telefónico
                     var CallIntent =
                        new Android.Content.Intent(Android.Content.Intent.ActionCall);
@@ -53,9 +63,17 @@ namespace PhoneApp
                         Android.Net.Uri.Parse($"tel:{TranslatedNumber}"));
                     StartActivity(CallIntent);
                 });
+
                 CallDialog.SetNegativeButton("Cancelar", delegate { });
                 // Mostrar el cuadro de diálogo al usuario y esperar una respuesta.
                 CallDialog.Show();
+            };
+
+            CallHistoryButton.Click += (sender, e) =>
+            {
+                var intent = new Android.Content.Intent(this, typeof(CallHistoryActivity));
+                intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
+                StartActivity(intent);
             };
 
             Validate();
@@ -76,7 +94,5 @@ namespace PhoneApp
             alert.SetButton("Ok", (s, ev) => { });
             alert.Show();
         }
-
     }
 }
-
