@@ -24,10 +24,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/CallButton" />
-    <Button
+    <!--<Button
         android:text="@string/CallHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/CallHistoryButton"
-        android:enabled="false" />
+        android:enabled="false" />-->
+    <TextView
+        android:text="Status..."
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/MessageText"
+        android:textColor="@android:color/holo_green_dark"
+        android:paddingLeft="20.0dp"
+        android:paddingTop="20.0dp"
+        android:paddingRight="20.0dp"
+        android:paddingEnd="20.0dp" />
 </LinearLayout>

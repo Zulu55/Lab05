@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using SALLab06;
+using SALLab05;
 using System.Collections.Generic;
 
 namespace PhoneApp
@@ -10,6 +10,7 @@ namespace PhoneApp
     public class MainActivity : Activity
     {
         static readonly List<string> phoneNumbers = new List<string>();
+        TextView MessageText;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -21,7 +22,8 @@ namespace PhoneApp
             var PhoneNumberText = FindViewById<EditText>(Resource.Id.PhoneNumberText);
             var TranslateButton = FindViewById<Button>(Resource.Id.TranslateButton);
             var CallButton = FindViewById<Button>(Resource.Id.CallButton);
-            var CallHistoryButton = FindViewById<Button>(Resource.Id.CallHistoryButton);
+            //var CallHistoryButton = FindViewById<Button>(Resource.Id.CallHistoryButton);
+            MessageText = FindViewById<TextView>(Resource.Id.MessageText);
 
             CallButton.Enabled = false;
 
@@ -54,7 +56,7 @@ namespace PhoneApp
                     phoneNumbers.Add(TranslatedNumber);
 
                     // Habilitar botón CallHistotyButton
-                    CallHistoryButton.Enabled = true;
+                    //CallHistoryButton.Enabled = true;
 
                     // Crear un intento para marcar el número telefónico
                     var CallIntent =
@@ -69,12 +71,12 @@ namespace PhoneApp
                 CallDialog.Show();
             };
 
-            CallHistoryButton.Click += (sender, e) =>
-            {
-                var intent = new Android.Content.Intent(this, typeof(CallHistoryActivity));
-                intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
-                StartActivity(intent);
-            };
+            //CallHistoryButton.Click += (sender, e) =>
+            //{
+            //    var intent = new Android.Content.Intent(this, typeof(CallHistoryActivity));
+            //    intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
+            //    StartActivity(intent);
+            //};
 
             Validate();
         }
@@ -82,17 +84,18 @@ namespace PhoneApp
         private async void Validate()
         {
             var serviceClient = new ServiceClient();
-            var studentEmail = "XXX";
-            var password = "XXX";
+            var studentEmail = "jzuluaga55@gmail.com";
+            var password = "Roger1974";
             var myDevice = Android.Provider.Settings.Secure.GetString(ContentResolver, Android.Provider.Settings.Secure.AndroidId);
             var result = await serviceClient.ValidateAsync(studentEmail, password, myDevice);
-            var builder = new AlertDialog.Builder(this);
-            var alert = builder.Create();
-            alert.SetTitle("Resultado de la verificación");
-            alert.SetIcon(Resource.Drawable.Icon);
-            alert.SetMessage($"{result.Status}\n{result.Fullname}\n{result.Token}");
-            alert.SetButton("Ok", (s, ev) => { });
-            alert.Show();
+            MessageText.Text = $"{result.Status}\n{result.Fullname}\n{result.Token}";
+            //var builder = new AlertDialog.Builder(this);
+            //var alert = builder.Create();
+            //alert.SetTitle("Resultado de la verificación");
+            //alert.SetIcon(Resource.Drawable.Icon);
+            //alert.SetMessage($"{result.Status}\n{result.Fullname}\n{result.Token}");
+            //alert.SetButton("Ok", (s, ev) => { });
+            //alert.Show();
         }
     }
 }
